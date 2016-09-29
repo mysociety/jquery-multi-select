@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery-multi-select</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <form>
+        <label for="people">Select people:</label>
+        <select id="people" name="people" multiple>
+            <option value="alice">Alice</option>
+            <option value="bob">Bob</option>
+            <option value="carol">Carol</option>
+        </select>
+    </form>
+
+    <script type="text/javascript" src="../test/lib/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="../src/jquery.multi-select.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        $('select').multiSelect();
+    });
+    </script>
+
+</body>
+</html>
