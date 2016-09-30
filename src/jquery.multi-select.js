@@ -2,7 +2,7 @@
 // by mySociety
 // https://github.com/mysociety/jquery-multi-select
 
-;(function($, window, document, undefined) {
+;(function($) {
 
   "use strict";
 
@@ -136,7 +136,7 @@
         e.preventDefault();
         e.stopPropagation();
         _this.$container.toggleClass(_this.settings.activeClass);
-      })
+      });
     },
 
     updateMenuContents: function() {
@@ -214,4 +214,4 @@
     });
   };
 
-})(jQuery, window, document);
+})(jQuery);
