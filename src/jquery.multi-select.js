@@ -102,8 +102,12 @@
         _this.updateButtonContents();
       });
 
-      this.$element.on('change', function() {
-        _this.updateMenuContents();
+      this.$element.on('change', function(e, internal) {
+        // Don't need to update the menu contents if this
+        // change event was fired by our tickbox handler.
+        if(internal !== true){
+          _this.updateMenuContents();
+        }
       });
 
       this.$container.append(this.$menu);
@@ -170,6 +174,10 @@
         } else {
           $option.prop('selected', false);
         }
+
+        // .prop() on its own doesn't generate a change event.
+        // Other plugins might want to do stuff onChange.
+        $option.trigger('change', [true]);
       });
 
       $item.prepend($input);
