@@ -1,5 +1,7 @@
-// the semi-colon before function invocation is a safety net against concatenated
-// scripts and/or other plugins which may not be closed properly.
+// jquery.multi-select.js
+// by mySociety
+// https://github.com/mysociety/jquery-multi-select
+
 ;(function($, window, document, undefined) {
 
   "use strict";
