@@ -13,7 +13,8 @@
       buttonHTML: '<span class="multi-select-button">',
       menuItemHTML: '<label class="multi-select-menuitem">',
       activeClass: 'multi-select-container--open',
-      placeholderText: '-- Select --'
+      noneText: '-- Select --',
+      allText: undefined
     };
 
   function Plugin(element, options) {
@@ -67,7 +68,7 @@
         'aria-haspopup': 'true',
         'tabindex': 0,
         'aria-label': this.$labels.eq(0).text()
-      }).text(this.settings.placeholderText)
+      })
       .on('keydown', function(e) {
         var key = e.which;
         var returnKey = 13;
@@ -188,18 +189,29 @@
 
     updateButtonContents: function() {
       var _this = this;
+      var options = [];
       var selected = [];
 
-      this.$element.children('option:selected').each(function() {
-        selected.push( $(this).text() );
+      this.$element.children('option').each(function() {
+        var text = $(this).text();
+        options.push(text);
+        if ($(this).is(':selected')) {
+          selected.push(text);
+        }
       });
 
       this.$button.empty();
 
-      if (selected.length > 0) {
-        this.$button.text( selected.join(', ') );
+      if (selected.length === options.length) {
+        if (this.settings.allText) {
+          this.$button.text( this.settings.allText );
+        } else {
+          this.$button.text( selected.join(', ') );
+        }
+      } else if (selected.length == 0) {
+        this.$button.text( this.settings.noneText );
       } else {
-        this.$button.text( this.settings.placeholderText );
+        this.$button.text( selected.join(', ') );
       }
     }
 

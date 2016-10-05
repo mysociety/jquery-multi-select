@@ -25,7 +25,8 @@ You can pass a number of options into `.multiSelect()` to customise the HTML out
         buttonHTML: '<button class="btn btn-default">',
         menuItemHTML: '<label>',
         activeClass: 'dropdown-menu--open',
-        placeholderText: '-- Choisir --'
+        noneText: '-- Choisir --',
+        allText: 'Tout le monde'
     });
 
 ## See a demo

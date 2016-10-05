@@ -359,6 +359,68 @@ describe("When I press the escape key while the menu is focussed", function(){
   });
 });
 
+describe("When no <option>s are selected", function(){
+  var $select, $container;
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the button displays the default `noneText`", function() {
+    $select = helper.makeSelect().appendTo('body').multiSelect();
+    $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-button').text()
+    ).toEqual('-- Select --');
+  });
+
+  it("...or the button displays the custom `noneText`, if it is provided", function() {
+    $select = helper.makeSelect().appendTo('body').multiSelect({
+      'noneText': 'None of the options'
+    });
+    $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-button').text()
+    ).toEqual('None of the options');
+  });
+});
+
+describe("When all <option>s are selected", function(){
+  var $select, $container;
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the button displays a comma-separated list of checked options", function() {
+    $select = helper.makeSelect().appendTo('body').multiSelect();
+    $select.find('option').prop('selected', true);
+    $select.trigger('change');
+    $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-button').text()
+    ).toEqual('Alice, Bob, Carol');
+  });
+
+  it("...or the button displays the custom 'allText', if it is provided", function() {
+    $select = helper.makeSelect().appendTo('body').multiSelect({
+      'allText': 'All the options'
+    });
+    $select.find('option').prop('selected', true);
+    $select.trigger('change');
+    $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-button').text()
+    ).toEqual('All the options');
+  });
+});
+
 describe("I can customise", function() {
   it("the HTML markup of the container element", function() {
     var $select = helper.makeSelect().multiSelect({
@@ -424,15 +486,28 @@ describe("I can customise", function() {
       $container.remove();
   });
 
-  it("the placeholder text shown when no selections have been made", function() {
+  it("the text shown when no options have been selected", function() {
     var $select = helper.makeSelect().multiSelect({
-      placeholderText: 'My custom text'
+      noneText: 'No options selected'
     });
     var $container = $select.data('multiSelectContainer');
 
     expect(
       $container.find('.multi-select-button').text()
-    ).toEqual('My custom text');
+    ).toEqual('No options selected');
+  });
+
+  it("the text shown when all options have been selected", function() {
+    var $select = helper.makeSelect().multiSelect({
+      allText: 'All options selected'
+    });
+    $select.find('option').prop('selected', true);
+    $select.trigger('change');
+    var $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-button').text()
+    ).toEqual('All options selected');
   });
 });
 
