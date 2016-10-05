@@ -1,11 +1,18 @@
 var helper = {
-  makeSelect: function(){
+  makeSelect: function(options){
+    var options = options || {'Alice': [], 'Bob': [], 'Carol': []};
+
     var $select = $('<select multiple>');
-    $.each(['Alice', 'Bob', 'Carol'], function(i, name){
-      $('<option>').attr({
-        "value": name.toLowerCase()
-      }).text(name).appendTo($select);
+
+    $.each(options, function(label, listOfAttributes){
+      $('<option>').text(label).attr({
+        'value': label.toLowerCase()
+      }).prop({
+        'selected': listOfAttributes.indexOf('selected') !== -1,
+        'disabled': listOfAttributes.indexOf('disabled') !== -1
+      }).appendTo($select);
     });
+
     return $select;
   }
 }
@@ -79,11 +86,11 @@ describe("$(element).multiSelect().data('multiSelectContainer')", function() {
 });
 
 describe("Calling .multiSelect() on a <select> with pre-selected <options>", function() {
-  var $select = $('<select multiple>');
-  $select.append('<option selected>Alice</option>');
-  $select.append('<option selected>Bob</option>');
-  $select.append('<option>Carol</option>');
-  $select.multiSelect();
+  var $select = helper.makeSelect({
+    'Alice': ['selected'],
+    'Bob': ['selected'],
+    'Carol': []
+  }).multiSelect();
   var $container = $select.data('multiSelectContainer');
 
   it("ticks the corresponding checkboxes in the menu", function() {
@@ -100,11 +107,11 @@ describe("Calling .multiSelect() on a <select> with pre-selected <options>", fun
 });
 
 describe("Calling .multiSelect() on a <select> with disabled <options>", function() {
-  var $select = $('<select multiple>');
-  $select.append('<option selected>Alice</option>');
-  $select.append('<option disabled>Bob</option>');
-  $select.append('<option disabled>Carol</option>');
-  $select.multiSelect();
+  var $select = helper.makeSelect({
+    'Alice': ['selected'],
+    'Bob': ['disabled'],
+    'Carol': ['disabled']
+  }).multiSelect();
   var $container = $select.data('multiSelectContainer');
 
   it("disables the corresponding checkboxes in the menu", function() {
@@ -498,11 +505,13 @@ describe("I can customise", function() {
   });
 
   it("the text shown when all options have been selected", function() {
-    var $select = helper.makeSelect().multiSelect({
+    var $select = helper.makeSelect({
+      'Alice': ['selected'],
+      'Bob': ['selected'],
+      'Carol': ['selected']
+    }).multiSelect({
       allText: 'All options selected'
     });
-    $select.find('option').prop('selected', true);
-    $select.trigger('change');
     var $container = $select.data('multiSelectContainer');
 
     expect(
