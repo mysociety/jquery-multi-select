@@ -38,9 +38,6 @@
       this.setUpBodyClickListener();
       this.setUpLabelsClickListener();
 
-      this.updateMenuContents();
-      this.updateButtonContents();
-
       this.$element.hide();
     },
 
@@ -85,6 +82,8 @@
       });
 
       this.$container.append(this.$button);
+
+      this.updateButtonContents();
     },
 
     constructMenu: function() {
@@ -114,6 +113,8 @@
       });
 
       this.$container.append(this.$menu);
+
+      this.updateMenuContents();
     },
 
     setUpBodyClickListener: function() {
