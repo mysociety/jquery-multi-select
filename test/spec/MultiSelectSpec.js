@@ -366,65 +366,108 @@ describe("When I press the escape key while the menu is focussed", function(){
   });
 });
 
-describe("When no <option>s are selected", function(){
-  var $select, $container;
+describe("When no <option>s are selected", function() {
 
-  afterEach(function(){
-    $select.remove();
-    $container.remove();
-  });
+  describe("If custom `noneText` was provided", function() {
+    var $select, $container;
 
-  it("the button displays the default `noneText`", function() {
-    $select = helper.makeSelect().appendTo('body').multiSelect();
-    $container = $select.data('multiSelectContainer');
-
-    expect(
-      $container.find('.multi-select-button').text()
-    ).toEqual('-- Select --');
-  });
-
-  it("...or the button displays the custom `noneText`, if it is provided", function() {
-    $select = helper.makeSelect().appendTo('body').multiSelect({
-      'noneText': 'None of the options'
+    afterEach(function() {
+      $select.remove();
+      $container.remove();
     });
-    $container = $select.data('multiSelectContainer');
 
-    expect(
-      $container.find('.multi-select-button').text()
-    ).toEqual('None of the options');
+    it("the button displays the custom `noneText`", function() {
+      $select = helper.makeSelect().appendTo('body').multiSelect({
+        'noneText': 'None of the options'
+      });
+      $container = $select.data('multiSelectContainer');
+
+      expect(
+        $container.find('.multi-select-button').text()
+      ).toEqual('None of the options');
+    });
+  });
+
+  describe("If custom `noneText` was not provided", function() {
+    var $select, $container;
+
+    afterEach(function() {
+      $select.remove();
+      $container.remove();
+    });
+
+    it("the button displays the default `noneText`", function() {
+      $select = helper.makeSelect().appendTo('body').multiSelect();
+      $container = $select.data('multiSelectContainer');
+
+      expect(
+        $container.find('.multi-select-button').text()
+      ).toEqual('-- Select --');
+    });
   });
 });
 
-describe("When all <option>s are selected", function(){
-  var $select, $container;
+describe("When all <option>s are selected", function() {
 
-  afterEach(function(){
-    $select.remove();
-    $container.remove();
-  });
+  describe("If custom `allText` was provided", function() {
+    var $select, $container;
 
-  it("the button displays a comma-separated list of checked options", function() {
-    $select = helper.makeSelect().appendTo('body').multiSelect();
-    $select.find('option').prop('selected', true);
-    $select.trigger('change');
-    $container = $select.data('multiSelectContainer');
-
-    expect(
-      $container.find('.multi-select-button').text()
-    ).toEqual('Alice, Bob, Carol');
-  });
-
-  it("...or the button displays the custom 'allText', if it is provided", function() {
-    $select = helper.makeSelect().appendTo('body').multiSelect({
-      'allText': 'All the options'
+    beforeEach(function() {
+      $select = helper.makeSelect({
+        'Alice': ['selected'],
+        'Bob': ['selected'],
+        'Carol': ['selected']
+      }).appendTo('body').multiSelect({
+        'allText': 'All the options'
+      });
+      $container = $select.data('multiSelectContainer');
     });
-    $select.find('option').prop('selected', true);
-    $select.trigger('change');
-    $container = $select.data('multiSelectContainer');
 
-    expect(
-      $container.find('.multi-select-button').text()
-    ).toEqual('All the options');
+    afterEach(function() {
+      $select.remove();
+      $container.remove();
+    });
+
+    it("the button displays the custom `allText`", function() {
+      expect(
+        $container.find('.multi-select-button').text()
+      ).toEqual('All the options');
+    });
+  });
+
+  describe("If no `allText` was provided", function() {
+    var $select, $container;
+
+    afterEach(function() {
+      $select.remove();
+      $container.remove();
+    });
+
+    it("the button displays a comma-separated list of checked options", function() {
+      $select = helper.makeSelect({
+        'Alice': ['selected'],
+        'Bob': ['selected'],
+        'Carol': ['selected']
+      }).appendTo('body').multiSelect();
+      $container = $select.data('multiSelectContainer');
+
+      expect(
+        $container.find('.multi-select-button').text()
+      ).toEqual('Alice, Bob, Carol');
+    });
+
+    it("leading and trailing whitespace in option names is ignored", function() {
+      $select = helper.makeSelect({
+        '    Alice  ': ['selected'],
+        'Bob  ': ['selected'],
+        '    Carol': ['selected']
+      }).appendTo('body').multiSelect();
+      $container = $select.data('multiSelectContainer');
+
+      expect(
+        $container.find('.multi-select-button').text()
+      ).toEqual('Alice, Bob, Carol');
+    });
   });
 });
 

@@ -197,20 +197,16 @@
         var text = $(this).text();
         options.push(text);
         if ($(this).is(':selected')) {
-          selected.push(text);
+          selected.push( $.trim(text) );
         }
       });
 
       this.$button.empty();
 
-      if (selected.length === options.length) {
-        if (this.settings.allText) {
-          this.$button.text( this.settings.allText );
-        } else {
-          this.$button.text( selected.join(', ') );
-        }
-      } else if (selected.length == 0) {
+      if (selected.length == 0) {
         this.$button.text( this.settings.noneText );
+      } else if ( (selected.length === options.length) && this.settings.allText) {
+        this.$button.text( this.settings.allText );
       } else {
         this.$button.text( selected.join(', ') );
       }
