@@ -14,7 +14,9 @@
       menuItemHTML: '<label class="multi-select-menuitem">',
       activeClass: 'multi-select-container--open',
       noneText: '-- Select --',
-      allText: undefined
+      allText: undefined,
+      positionedMenuClass: 'multi-select-container--positioned',
+      positionMenuWithin: undefined
     };
 
   function Plugin(element, options) {
@@ -74,7 +76,7 @@
           _this.$button.click();
         }
       }).on('click', function(e) {
-        _this.$container.toggleClass(_this.settings.activeClass);
+        _this.menuToggle();
       });
 
       this.$element.on('change', function() {
@@ -96,7 +98,7 @@
         var key = e.which;
         var escapeKey = 27;
         if (key === escapeKey) {
-          _this.$container.removeClass(_this.settings.activeClass);
+          _this.menuHide();
         }
       });
 
@@ -122,7 +124,7 @@
 
       // Hide the $menu when you click outside of it.
       $('html').on('click', function(){
-        _this.$container.removeClass(_this.settings.activeClass);
+        _this.menuHide();
       });
 
       // Stop click events from inside the $button or $menu from
@@ -137,7 +139,7 @@
       this.$labels.on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
-        _this.$container.toggleClass(_this.settings.activeClass);
+        _this.menuToggle();
       });
     },
 
@@ -209,6 +211,34 @@
         this.$button.text( this.settings.allText );
       } else {
         this.$button.text( selected.join(', ') );
+      }
+    },
+
+    menuShow: function() {
+      this.$container.addClass(this.settings.activeClass);
+      if (this.settings.positionMenuWithin && this.settings.positionMenuWithin instanceof $) {
+        var menuLeftEdge = this.$menu.offset().left + this.$menu.outerWidth();
+        var withinLeftEdge = this.settings.positionMenuWithin.offset().left +
+          this.settings.positionMenuWithin.outerWidth();
+
+        if( menuLeftEdge > withinLeftEdge ) {
+          this.$menu.css( 'width', (withinLeftEdge - this.$menu.offset().left) );
+          this.$container.addClass(this.settings.positionedMenuClass);
+        }
+      }
+    },
+
+    menuHide: function() {
+      this.$container.removeClass(this.settings.activeClass);
+      this.$container.removeClass(this.settings.positionedMenuClass);
+      this.$menu.css('width', 'auto');
+    },
+
+    menuToggle: function() {
+      if ( this.$container.hasClass(this.settings.activeClass) ) {
+        this.menuHide();
+      } else {
+        this.menuShow();
       }
     }
 

@@ -17,6 +17,25 @@ var helper = {
   }
 }
 
+var customMatchers = {
+  toBeLessThanOrEqualTo: function() {
+    return {
+      compare: function(firstThing, secondThing) {
+        var result = {
+          pass: firstThing <= secondThing
+        };
+        if (result.pass) {
+          // Used in the case of a .not matcher
+          result.message = "Expected " + firstThing + " not to be less than or equal to " + secondThing;
+        } else {
+          result.message = "Expected " + firstThing + " to be less than or equal to " + secondThing;
+        }
+        return result;
+      }
+    }
+  }
+}
+
 describe("$(element).multiSelect()", function() {
 
   it("should be a jQuery plugin", function() {
@@ -561,5 +580,31 @@ describe("I can customise", function() {
       $container.find('.multi-select-button').text()
     ).toEqual('All options selected');
   });
+
+  it("an element within which the menu should be contained", function() {
+    jasmine.addMatchers(customMatchers);
+
+    var $within = $('<div>').addClass('position-menu-within').appendTo('body');
+    var $select = helper.makeSelect({
+      'The final option…': [],
+      'Should wrap onto…': [],
+      'Multiple lines, to avoid expanding outside the grey wrapper': []
+    }).appendTo($within);
+    $select.multiSelect({
+      positionMenuWithin: $within
+    });
+    var $container = $select.data('multiSelectContainer');
+    var $menu = $container.find('.multi-select-menu');
+
+    $container.children('.multi-select-button').trigger('click');
+
+    expect(
+      $menu.offset().left + $menu.outerWidth()
+    ).toBeLessThanOrEqualTo(
+      $within.offset().left + $within.outerWidth()
+    );
+
+    $within.remove();
+  })
 });
 
