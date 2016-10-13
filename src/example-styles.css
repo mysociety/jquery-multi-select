@@ -21,13 +21,14 @@
 .multi-select-menu label {
     display: block;
     font-size: 0.875em;
-    padding: 0.3em 1em;
+    padding: 0.3em 1em 0.3em 30px;
     white-space: nowrap;
 }
 
 .multi-select-menu input {
-    margin-right: 0.3em;
-    vertical-align: 0.1em;
+    position: absolute;
+    margin-top: 0.25em;
+    margin-left: -20px;
 }
 
 .multi-select-button {
