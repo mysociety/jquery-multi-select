@@ -68,18 +68,18 @@
         'tabindex': 0,
         'aria-label': this.$labels.eq(0).text()
       })
-      .on('keydown', function(e) {
+      .on('keydown.multiselect', function(e) {
         var key = e.which;
         var returnKey = 13;
         var spaceKey = 32;
         if ((key === returnKey) || (key === spaceKey)) {
           _this.$button.click();
         }
-      }).on('click', function(e) {
+      }).on('click.multiselect', function(e) {
         _this.menuToggle();
       });
 
-      this.$element.on('change', function() {
+      this.$element.on('change.multiselect', function() {
         _this.updateButtonContents();
       });
 
@@ -94,7 +94,7 @@
       this.$menu = $(this.settings.menuHTML);
       this.$menu.attr({
         'role': 'menu'
-      }).on('keyup', function(e){
+      }).on('keyup.multiselect', function(e){
         var key = e.which;
         var escapeKey = 27;
         if (key === escapeKey) {
@@ -102,11 +102,11 @@
         }
       });
 
-      this.$menu.on('change', function() {
+      this.$menu.on('change.multiselect', function() {
         _this.updateButtonContents();
       });
 
-      this.$element.on('change', function(e, internal) {
+      this.$element.on('change.multiselect', function(e, internal) {
         // Don't need to update the menu contents if this
         // change event was fired by our tickbox handler.
         if(internal !== true){
@@ -123,20 +123,20 @@
       var _this = this;
 
       // Hide the $menu when you click outside of it.
-      $('html').on('click', function(){
+      $('html').on('click.multiselect', function(){
         _this.menuHide();
       });
 
       // Stop click events from inside the $button or $menu from
       // bubbling up to the body and closing the menu!
-      this.$container.on('click', function(e){
+      this.$container.on('click.multiselect', function(e){
         e.stopPropagation();
       });
     },
 
     setUpLabelsClickListener: function() {
       var _this = this;
-      this.$labels.on('click', function(e) {
+      this.$labels.on('click.multiselect', function(e) {
         e.preventDefault();
         e.stopPropagation();
         _this.menuToggle();
@@ -174,7 +174,7 @@
         $input.prop('checked', 'checked');
       }
 
-      $input.on('change', function() {
+      $input.on('change.multiselect', function() {
         if ($(this).prop('checked')) {
           $option.prop('selected', true);
         } else {
