@@ -17,6 +17,16 @@
         </select>
     </form>
 
+    <form class="demo-example">
+        <label for="categories">Show:</label>
+        <select id="categories" name="categories" multiple>
+            <option value="a">Abandoned vehicles</option>
+            <option value="b">Bus stops</option>
+            <option value="c">Car parking</option>
+            <option value="d">Dog fouling</option>
+        </select>
+    </form>
+
     <div class="demo-example position-menu-within">
         <label for="line-wrap-example">Line wrap example</label>
         <select id="line-wrap-example" multiple>
@@ -34,6 +44,19 @@
         $('#line-wrap-example').multiSelect({
             positionMenuWithin: $('.position-menu-within')
         });
+        $('#categories').multiSelect({
+            noneText: 'All categories',
+            presets: [
+                {
+                    name: 'All categories',
+                    options: []
+                },
+                {
+                    name: 'My categories',
+                    options: ['a', 'c']
+                }
+            ]
+        })
     });
     </script>
 

@@ -490,6 +490,135 @@ describe("When all <option>s are selected", function() {
   });
 });
 
+describe("When a list of `presets` is provided", function() {
+  var $select, $container;
+
+  beforeEach(function(){
+    $select = helper.makeSelect({
+      'Alice': [],
+      'Bob': [],
+      'Carol': []
+    }).appendTo('body').multiSelect({
+      presets: [
+        {
+          name: 'No people',
+          options: []
+        },
+        {
+          name: 'My friends',
+          options: ['alice', 'carol']
+        }
+      ]
+    });
+    $container = $select.data('multiSelectContainer');
+  });
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the presets are presented as radio buttons at the top of the menu", function() {
+    expect(
+      $container.find('.multi-select-presets input[type="radio"]').length
+    ).toEqual(2);
+  });
+
+  it("the presets are listed in the order they were originally provided", function() {
+    expect(
+      $.trim(
+        $container.find('.multi-select-presets label:nth-child(1)').text()
+      )
+    ).toEqual('No people');
+    expect(
+      $.trim(
+        $container.find('.multi-select-presets label:nth-child(2)').text()
+      )
+    ).toEqual('My friends');
+  });
+
+  it("the correct starting preset is selected", function(){
+    expect(
+      $container.find('.multi-select-presets label:nth-child(1) input')[0].checked
+    ).toBe(true);
+  });
+
+  describe("When the selected options are changed to match another preset", function(){
+    // This beforeEach will run after the parent beforeEach, where
+    // the <select> is created with no options selected.
+    beforeEach(function(){
+      $container.find('input[value="alice"], input[value="carol"]').each(function(){
+        $(this).trigger('click');
+      });
+    });
+
+    it("the correct preset is selected", function(){
+      expect(
+        $container.find('.multi-select-presets label:nth-child(2) input')[0].checked
+      ).toBe(true);
+
+      expect(
+        $container.find('.multi-select-presets label:nth-child(1) input')[0].checked
+      ).toBe(false);
+    });
+  });
+
+  describe("When the selected options are changed, such that no preset matches", function(){
+    // This beforeEach will run after the parent beforeEach, where
+    // the <select> is created with no options selected.
+    beforeEach(function(){
+      $container.find('input[value="alice"]').trigger('click');
+    });
+
+    it("no preset is selected", function(){
+      expect(
+        $container.find('.multi-select-presets label:nth-child(1) input')[0].checked
+      ).toBe(false);
+
+      expect(
+        $container.find('.multi-select-presets label:nth-child(2) input')[0].checked
+      ).toBe(false);
+    });
+  });
+
+  describe("When I click a preset", function(){
+    // This beforeEach will run after the parent beforeEach, where
+    // the <select> is created with no options selected.
+    beforeEach(function(){
+      $container.find('.multi-select-presets label:nth-child(2) input').trigger('click');
+    });
+
+    it("ticks the corresponding options in the menu", function(){
+      expect(
+        $container.find('input[value="alice"]')[0].checked
+      ).toBe(true);
+
+      expect(
+        $container.find('input[value="bob"]')[0].checked
+      ).toBe(false);
+
+      expect(
+        $container.find('input[value="carol"]')[0].checked
+      ).toBe(true);
+
+      expect(
+        $select.val()
+      ).toEqual(["alice", "carol"]);
+    });
+  });
+});
+
+describe("When no `presets` are provided", function() {
+  var $select = helper.makeSelect().multiSelect();
+  var $container = $select.data('multiSelectContainer');
+
+  it("there are no presets in the menu", function() {
+    expect(
+      $container.find('.multi-select-presets').length
+    ).toEqual(0);
+  });
+});
+
 describe("I can customise", function() {
   it("the HTML markup of the container element", function() {
     var $select = helper.makeSelect().multiSelect({
@@ -533,6 +662,23 @@ describe("I can customise", function() {
     expect(
       $container.find('li.my-custom-class').length
     ).toEqual(3);
+  });
+
+  it("the HTML markup of the presets element", function() {
+    var $select = helper.makeSelect().multiSelect({
+      presetsHTML: '<div class="my-custom-presets">',
+      presets: [
+        {
+          name: 'No people',
+          options: []
+        }
+      ]
+    });
+    var $container = $select.data('multiSelectContainer');
+
+    expect(
+      $container.find('.multi-select-menu > .my-custom-presets').length
+    ).toEqual(1);
   });
 
   it("the activeClass applied to the container when the menu is to be shown", function() {

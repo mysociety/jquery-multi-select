@@ -28,6 +28,10 @@
     padding-top: 0;
 }
 
+.multi-select-presets {
+    border-bottom: 1px solid #ddd;
+}
+
 .multi-select-menuitem input {
     position: absolute;
     margin-top: 0.25em;
