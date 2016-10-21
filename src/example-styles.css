@@ -12,20 +12,23 @@
     min-width: 100%;
     background: #fff;
     margin: 1em 0;
-    padding: 0.4em 0;
     border: 1px solid #aaa;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     display: none;
 }
 
-.multi-select-menu label {
+.multi-select-menuitem {
     display: block;
     font-size: 0.875em;
-    padding: 0.3em 1em 0.3em 30px;
+    padding: 0.6em 1em 0.6em 30px;
     white-space: nowrap;
 }
 
-.multi-select-menu input {
+.multi-select-menuitem + .multi-select-menuitem {
+    padding-top: 0;
+}
+
+.multi-select-menuitem input {
     position: absolute;
     margin-top: 0.25em;
     margin-left: -20px;

@@ -54,15 +54,17 @@ body {
     padding: 2em;
 }
 
-label[for="people"],
-label[for="line-wrap-example"] {
+.demo-example {
+    margin-bottom: 2em;
+}
+
+.demo-example > label {
     display: block;
     margin-bottom: 0.5em;
     font-weight: bold;
 }
 
 .position-menu-within {
-    margin-top: 2em;
     width: 18em;
     height: 15em;
     background: #eee;
