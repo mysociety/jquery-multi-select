@@ -146,10 +146,6 @@
       })
       .appendTo(this.$container);
 
-      this.$menu.on('change.multiselect', function() {
-        _this.updateButtonContents();
-      });
-
       this.constructMenuItems();
 
       if ( this.settings.presets ) {
