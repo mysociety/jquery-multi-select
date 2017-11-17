@@ -355,6 +355,46 @@ describe("When I click outside an active menu", function(){
   });
 });
 
+describe("When I open a second menu while another menu is already active", function(){
+  var $select1, $select2, $container1, $container2;
+
+  beforeEach(function(){
+    $select1 = helper.makeSelect().appendTo('body').multiSelect();
+    $select2 = helper.makeSelect().appendTo('body').multiSelect();
+    $container1 = $select1.data('multiSelectContainer');
+    $container2 = $select2.data('multiSelectContainer');
+  });
+
+  afterEach(function(){
+    $select1.remove();
+    $select2.remove();
+    $container1.remove();
+    $container2.remove();
+  });
+
+  it("the active menu loses its activeClass", function() {
+    $container1.children('.multi-select-button').trigger('click');
+
+    expect(
+      $container1.hasClass('multi-select-container--open')
+    ).toBe(true);
+
+    expect(
+      $container2.hasClass('multi-select-container--open')
+    ).toBe(false);
+
+    $container2.children('.multi-select-button').trigger('click');
+
+    expect(
+      $container1.hasClass('multi-select-container--open')
+    ).toBe(false);
+
+    expect(
+      $container2.hasClass('multi-select-container--open')
+    ).toBe(true);
+  });
+});
+
 describe("When I press the escape key while the menu is focussed", function(){
   var $select, $container;
 

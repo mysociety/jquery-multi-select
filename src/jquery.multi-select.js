@@ -295,6 +295,7 @@
     },
 
     menuShow: function() {
+      $('html').trigger('click.multiselect'); // Close any other open menus
       this.$container.addClass(this.settings['activeClass']);
       if (this.settings['positionMenuWithin'] && this.settings['positionMenuWithin'] instanceof $) {
         var menuLeftEdge = this.$menu.offset().left + this.$menu.outerWidth();
