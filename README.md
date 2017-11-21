@@ -31,8 +31,16 @@ You can pass a number of options into `.multiSelect()` to customise the HTML out
 
 ## See a demo
 
-Open `demo/index.html` in your web browser.
+Run `make demo`, or open `demo/index.html` in your web browser.
 
 ## Run the tests
 
-Open `test/SpecRunner.html` in your web browser.
+Run `make test`, or open `test/SpecRunner.html` in your web browser.
+
+## Compile minimized version
+
+You'll need the Closure Compiler, which you can get with `brew install
+closure-compiler` or directly from Google's website. If you use brew
+(or otherwise create a closure-compiler script in your PATH), you can
+run `make dist`, or otherwise you can run:
+`make dist COMPILER='java -jar path-to-compiler.jar'`.

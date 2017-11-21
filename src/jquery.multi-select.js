@@ -22,7 +22,10 @@
       'positionMenuWithin': undefined
     };
 
-  function Plugin(element, options) {
+  /**
+   * @constructor
+   */
+  function MultiSelect(element, options) {
     this.element = element;
     this.$element = $(element);
     this.settings = $.extend( {}, defaults, options );
@@ -48,7 +51,7 @@
     return true;
   }
 
-  $.extend(Plugin.prototype, {
+  $.extend(MultiSelect.prototype, {
 
     init: function() {
       this.checkSuitableInput();
@@ -113,7 +116,7 @@
       var selected = [];
 
       this.$element.children('option').each(function() {
-        var text = $(this).text();
+        var text = /** @type string */ ($(this).text());
         options.push(text);
         if ($(this).is(':selected')) {
           selected.push( $.trim(text) );
@@ -329,7 +332,7 @@
     return this.each(function() {
       if ( !$.data(this, "plugin_" + pluginName) ) {
         $.data(this, "plugin_" + pluginName,
-          new Plugin(this, options) );
+          new MultiSelect(this, options) );
       }
     });
   };
