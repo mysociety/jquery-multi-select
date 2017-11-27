@@ -19,7 +19,9 @@
       'allText': undefined,
       'presets': undefined,
       'positionedMenuClass': 'multi-select-container--positioned',
-      'positionMenuWithin': undefined
+      'positionMenuWithin': undefined,
+      'viewportBottomGutter': 20,
+      'menuMinHeight': 200
     };
 
   /**
@@ -310,6 +312,23 @@
           this.$menu.css( 'width', (withinLeftEdge - this.$menu.offset().left) );
           this.$container.addClass(this.settings['positionedMenuClass']);
         }
+      }
+
+      var menuBottom = this.$menu.offset().top + this.$menu.outerHeight();
+      var viewportBottom = $(window).scrollTop() + $(window).height();
+      if ( menuBottom > viewportBottom - this.settings['viewportBottomGutter'] ) {
+        this.$menu.css({
+          'maxHeight': Math.max(
+            viewportBottom - this.settings['viewportBottomGutter'] - this.$menu.offset().top,
+            this.settings['menuMinHeight']
+          ),
+          'overflow': 'scroll'
+        });
+      } else {
+        this.$menu.css({
+          'maxHeight': '',
+          'overflow': ''
+        });
       }
     },
 
