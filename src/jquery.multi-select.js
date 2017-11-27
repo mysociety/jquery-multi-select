@@ -300,12 +300,13 @@
     menuShow: function() {
       $('html').trigger('click.multiselect'); // Close any other open menus
       this.$container.addClass(this.settings['activeClass']);
-      if (this.settings['positionMenuWithin'] && this.settings['positionMenuWithin'] instanceof $) {
+
+      if ( this.settings['positionMenuWithin'] && this.settings['positionMenuWithin'] instanceof $ ) {
         var menuLeftEdge = this.$menu.offset().left + this.$menu.outerWidth();
         var withinLeftEdge = this.settings['positionMenuWithin'].offset().left +
           this.settings['positionMenuWithin'].outerWidth();
 
-        if( menuLeftEdge > withinLeftEdge ) {
+        if ( menuLeftEdge > withinLeftEdge ) {
           this.$menu.css( 'width', (withinLeftEdge - this.$menu.offset().left) );
           this.$container.addClass(this.settings['positionedMenuClass']);
         }
