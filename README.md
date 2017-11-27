@@ -26,7 +26,11 @@ You can pass a number of options into `.multiSelect()` to customise the HTML out
         menuItemHTML: '<label>',
         activeClass: 'dropdown-menu--open',
         noneText: '-- Choisir --',
-        allText: 'Tout le monde'
+        allText: 'Tout le monde',
+        presets: [
+            { name: 'Favouris', options: ['item2', 'item4'] }
+        ],
+        positionMenuWithin: $('#form1')
     });
 
 ## See a demo
