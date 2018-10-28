@@ -90,16 +90,22 @@ describe("$(element).multiSelect().data('multiSelectContainer')", function() {
     ).toBe(false);
   });
 
+  it("should add additional <option> for select all option in the orginal <select>",function(){
+      expect(
+          $container.find('.multi-select-menuitem input').first().val()
+      ).toEqual("select_all");
+  });
+
   it("should contain a menu item for each <option> in the original <select>", function() {
     expect(
       $container.find('.multi-select-menuitem').length
-    ).toEqual(3);
+    ).toEqual(4);
   });
 
   it("should contain a checkbox for each <option> in the original <select>", function() {
     expect(
       $container.find('input:checkbox').length
-    ).toEqual(3);
+    ).toEqual(4);
   });
 
 });
@@ -184,6 +190,21 @@ describe("When I tick checkboxes in the menu", function() {
     expect(
       $container.find('.multi-select-button').text()
     ).toEqual( ['Alice', 'Carol'].join(', ') );
+  });
+
+  it("when I check Select_all, all options should be selected", function () {
+    $container.find('input[value="select_all"]').trigger('click');
+
+    expect($select.val()).toEqual( [ 'alice', 'bob', 'carol' ] );
+  });
+
+  it("when I uncheck Select_all, none of the options should be selected", function () {
+    expect($select.val()).toBeNull();
+
+    $container.find('input[value="select_all"]').trigger('click'); //selected all
+    $container.find('input[value="select_all"]').trigger('click'); // cleared all
+
+    expect($select.val()).toBeNull();
   });
 });
 
@@ -701,7 +722,7 @@ describe("I can customise", function() {
 
     expect(
       $container.find('li.my-custom-class').length
-    ).toEqual(3);
+    ).toEqual(4);
   });
 
   it("the HTML markup of the presets element", function() {

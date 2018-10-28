@@ -105,6 +105,8 @@
       })
       .appendTo(this.$container);
 
+      this.$element.prepend('<option id="select_all" value="select_all"> Select All </option>');
+
       this.$element.on('change.multiselect', function() {
         _this.updateButtonContents();
       });
@@ -129,7 +131,7 @@
 
       if (selected.length == 0) {
         this.$button.text( this.settings['noneText'] );
-      } else if ( (selected.length === options.length) && this.settings['allText']) {
+      } else if ( (selected.length === options.length-1) && this.settings['allText']) {
         this.$button.text( this.settings['allText'] );
       } else {
         this.$button.text( selected.join(', ') );
@@ -237,6 +239,7 @@
     },
 
     constructMenuItem: function($option, option_index) {
+      var _this = this;
       var unique_id = this.$element.attr('name') + '_' + option_index;
       var $item = $(this.settings['menuItemHTML'])
         .attr({
@@ -261,16 +264,23 @@
       }
 
       $input.on('change.multiselect', function() {
-        if ($(this).prop('checked')) {
-          $option.prop('selected', true);
-        } else {
-          $option.prop('selected', false);
+        if($(this).val() == 'select_all') {
+          $(this).prop('checked') ? selectAllOptions(true) : selectAllOptions(false);
+        }else{
+          $(this).prop('checked') ? $option.prop('selected', true) : $option.prop('selected', false);
         }
 
         // .prop() on its own doesn't generate a change event.
         // Other plugins might want to do stuff onChange.
         $option.trigger('change', [true]);
       });
+
+      function selectAllOptions(selectedOrClearedAll) {
+        var $checkboxInput = $('.multi-select-menu .multi-select-menuitems input');
+        _this.$element.find('option').prop('selected', selectedOrClearedAll);
+        _this.$element.find('option').first().prop('selected', false);
+        _this.$element.next().find($checkboxInput).prop('checked', selectedOrClearedAll);
+      }
 
       return $item;
     },
