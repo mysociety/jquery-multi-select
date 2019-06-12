@@ -659,6 +659,72 @@ describe("When no `presets` are provided", function() {
   });
 });
 
+describe("When `modalHTML` is provided", function() {
+  var $select, $container;
+
+  beforeEach(function(){
+    $select = helper.makeSelect().multiSelect({
+      modalHTML: '<div class="multi-select-modal">'
+    });
+    $container = $select.data('multiSelectContainer');
+  });
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the modal element is inserted into the container, between the button and the menu", function(){
+    expect(
+      $container.children('.multi-select-modal').length
+    ).toEqual(1);
+    expect(
+      $container.children('.multi-select-button').next().is('div.multi-select-modal')
+    ).toBe(true);
+    expect(
+      $container.children('.multi-select-menu').prev().is('div.multi-select-modal')
+    ).toBe(true);
+  });
+
+  it("clicks on the modal element close the menu", function(){
+    $container.children('.multi-select-button').trigger('click');
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(true);
+
+    $container.children('.multi-select-modal').trigger('click');
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(false);
+  });
+});
+
+describe("When no `modalHTML` is provided", function() {
+  var $select, $container;
+
+  beforeEach(function(){
+    $select = helper.makeSelect().multiSelect();
+    $container = $select.data('multiSelectContainer');
+  });
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("no modal element is inserted into the container", function() {
+    expect(
+      $container.find('.multi-select-modal').length
+    ).toEqual(0);
+
+    expect(
+      $container.children().length
+    ).toEqual(2);
+  });
+});
+
 describe("I can customise", function() {
   it("the HTML markup of the container element", function() {
     var $select = helper.makeSelect().multiSelect({

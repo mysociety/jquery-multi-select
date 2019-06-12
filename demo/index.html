@@ -36,6 +36,17 @@
         </select>
     </div>
 
+    <form class="demo-example modal-example">
+        <label for="modal-example">Modal example</label>
+        <select id="modal-example" name="inventors" multiple>
+            <option value="al">Ada Lovelace</option>
+            <option value="gh">Grace Hopper</option>
+            <option value="hl">Hedy Lamarr</option>
+            <option value="mk">Margaret E. Knight</option>
+            <option value="sj">Shirley Ann Jackson</option>
+        </select>
+    </form>
+
     <script type="text/javascript" src="../test/lib/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="../src/jquery.multi-select.js"></script>
     <script type="text/javascript">
@@ -56,6 +67,9 @@
                     options: ['a', 'c']
                 }
             ]
+        });
+        $('#modal-example').multiSelect({
+            'modalHTML': '<div class="multi-select-modal">'
         });
     });
     </script>

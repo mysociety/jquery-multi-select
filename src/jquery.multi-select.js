@@ -14,6 +14,7 @@
       'menuItemsHTML': '<div class="multi-select-menuitems">',
       'menuItemHTML': '<label class="multi-select-menuitem">',
       'presetsHTML': '<div class="multi-select-presets">',
+      'modalHTML': undefined,
       'activeClass': 'multi-select-container--open',
       'noneText': '-- Select --',
       'allText': undefined,
@@ -61,6 +62,7 @@
       this.constructContainer();
       this.constructButton();
       this.constructMenu();
+      this.constructModal();
 
       this.setUpBodyClickListener();
       this.setUpLabelsClickListener();
@@ -273,6 +275,18 @@
       });
 
       return $item;
+    },
+
+    constructModal: function() {
+      var _this = this;
+
+      if (this.settings['modalHTML']) {
+        this.$modal = $(this.settings['modalHTML']);
+        this.$modal.on('click.multiselect', function(){
+          _this.menuHide();
+        })
+        this.$modal.insertBefore(this.$menu);
+      }
     },
 
     setUpBodyClickListener: function() {
