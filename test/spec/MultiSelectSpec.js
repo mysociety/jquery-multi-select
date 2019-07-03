@@ -395,7 +395,7 @@ describe("When I open a second menu while another menu is already active", funct
   });
 });
 
-describe("When I press the escape key while the menu is focussed", function(){
+describe("When I press the escape key", function(){
   var $select, $container;
 
   beforeEach(function(){
@@ -408,7 +408,7 @@ describe("When I press the escape key while the menu is focussed", function(){
     $container.remove();
   });
 
-  it("the container loses its activeClass", function() {
+  it("the container loses its activeClass (menu focussed)", function() {
     $container.children('.multi-select-button').trigger('click');
 
     expect(
@@ -423,7 +423,22 @@ describe("When I press the escape key while the menu is focussed", function(){
       $container.hasClass('multi-select-container--open')
     ).toBe(false);
   });
-});
+
+  it("the container loses its activeClass (button focussed)", function() {
+    $container.children('.multi-select-button').trigger('click');
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(true);
+
+    var e = jQuery.Event('keydown');
+    e.which = 27;
+    $container.children('.multi-select-button').trigger(e);
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(false);
+  });});
 
 describe("When no <option>s are selected", function() {
 

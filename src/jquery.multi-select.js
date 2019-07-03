@@ -98,9 +98,12 @@
       .on('keydown.multiselect', function(e) {
         var key = e.which;
         var returnKey = 13;
+        var escapeKey = 27;
         var spaceKey = 32;
         if ((key === returnKey) || (key === spaceKey)) {
           _this.$button.click();
+        } else if (key === escapeKey) {
+          _this.menuHide();
         }
       }).on('click.multiselect', function(e) {
         _this.menuToggle();
@@ -149,6 +152,7 @@
         var escapeKey = 27;
         if (key === escapeKey) {
           _this.menuHide();
+          _this.$button.focus();
         }
       })
       .appendTo(this.$container);
