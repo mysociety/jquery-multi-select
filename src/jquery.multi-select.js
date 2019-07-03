@@ -101,6 +101,7 @@
         var escapeKey = 27;
         var spaceKey = 32;
         if ((key === returnKey) || (key === spaceKey)) {
+          e.preventDefault();
           _this.$button.click();
         } else if (key === escapeKey) {
           _this.menuHide();
