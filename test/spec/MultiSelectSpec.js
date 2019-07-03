@@ -243,7 +243,7 @@ describe("When I click the button", function(){
   });
 });
 
-describe("When I press the space key while the button is focussed", function(){
+describe("When I press a key while the button is focussed", function(){
   var $select, $container;
 
   beforeEach(function(){
@@ -256,7 +256,7 @@ describe("When I press the space key while the button is focussed", function(){
     $container.remove();
   });
 
-  it("the container is given an activeClass", function() {
+  it("the container is given an activeClass (space)", function() {
     expect(
       $container.hasClass('multi-select-container--open')
     ).toBe(false);
@@ -269,22 +269,8 @@ describe("When I press the space key while the button is focussed", function(){
       $container.hasClass('multi-select-container--open')
     ).toBe(true);
   });
-});
 
-describe("When I press the enter key while the button is focussed", function(){
-  var $select, $container;
-
-  beforeEach(function(){
-    $select = helper.makeSelect().appendTo('body').multiSelect();
-    $container = $select.data('multiSelectContainer');
-  });
-
-  afterEach(function(){
-    $select.remove();
-    $container.remove();
-  });
-
-  it("the container is given an activeClass", function() {
+  it("the container is given an activeClass (return)", function() {
     expect(
       $container.hasClass('multi-select-container--open')
     ).toBe(false);
@@ -296,6 +282,65 @@ describe("When I press the enter key while the button is focussed", function(){
     expect(
       $container.hasClass('multi-select-container--open')
     ).toBe(true);
+  });
+
+  it("the container is given an activeClass (down) and focusses the first option", function() {
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(false);
+
+    var e = jQuery.Event('keydown');
+    e.which = 40;
+    $container.children('.multi-select-button').trigger(e);
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(true);
+    expect(document.activeElement).toEqual($container.find('input:first')[0]);
+  });
+});
+
+describe("When I press arrow keys on menu items", function(){
+  var $select, $container;
+
+  beforeEach(function(){
+    $select = helper.makeSelect().appendTo('body').multiSelect();
+    $container = $select.data('multiSelectContainer');
+    $container.children('.multi-select-button').trigger('click');
+  });
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the focus moves up items", function() {
+    var e = jQuery.Event('keydown');
+    e.which = 38;
+    $container.find('label:nth-child(2)').trigger(e);
+    expect(document.activeElement).toEqual($container.find('input')[0]);
+  });
+
+  it("the focus moves down items", function() {
+    var e = jQuery.Event('keydown');
+    e.which = 40;
+    $container.find('label:nth-child(2)').trigger(e);
+    expect(document.activeElement).toEqual($container.find('input')[2]);
+  });
+
+  it("the focus moves up to the button from the first item", function() {
+    var e = jQuery.Event('keydown');
+    e.which = 38;
+    $container.find('label:nth-child(1)').trigger(e);
+    expect(document.activeElement).toEqual($container.children('.multi-select-button')[0]);
+  });
+
+  it("the focus stays the same on the last item", function() {
+    var e = jQuery.Event('keydown');
+    e.which = 40;
+    $container.find('label:nth-child(3)').focus();
+    $container.find('label:nth-child(3)').trigger(e);
+    expect(document.activeElement).toEqual($container.find('input')[2]);
   });
 });
 

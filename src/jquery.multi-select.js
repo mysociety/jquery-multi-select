@@ -100,9 +100,15 @@
         var returnKey = 13;
         var escapeKey = 27;
         var spaceKey = 32;
+        var downArrow = 40;
         if ((key === returnKey) || (key === spaceKey)) {
           e.preventDefault();
           _this.$button.click();
+        } else if (key === downArrow) {
+          e.preventDefault();
+          _this.menuShow();
+          var group = _this.$presets || _this.$menuItems;
+          group.children(":first").focus();
         } else if (key === escapeKey) {
           _this.menuHide();
         }
@@ -192,6 +198,32 @@
       });
     },
 
+    upDown: function(type, e) {
+    var key = e.which;
+    var upArrow = 38;
+    var downArrow = 40;
+
+    if (key === upArrow) {
+      e.preventDefault();
+      var prev = $(e.currentTarget).prev();
+      if (prev.length) {
+        prev.focus();
+      } else if (this.$presets && type === 'menuitem') {
+        this.$presets.children(':last').focus();
+      } else {
+        this.$button.focus();
+      }
+    } else if (key === downArrow) {
+      e.preventDefault();
+      var next = $(e.currentTarget).next();
+      if (next.length || type === 'menuitem') {
+        next.focus();
+      } else {
+        this.$menuItems.children(':first').focus();
+      }
+    }
+  },
+
     constructPresets: function() {
       var _this = this;
       this.$presets = $(this.settings['presetsHTML']);
@@ -205,6 +237,7 @@
             'role': 'menuitem'
           })
           .text(' ' + preset.name)
+          .on('keydown.multiselect', _this.upDown.bind(_this, 'preset'))
           .appendTo(_this.$presets);
 
         var $input = $('<input>')
@@ -250,6 +283,7 @@
           'for': unique_id,
           'role': 'menuitem'
         })
+        .on('keydown.multiselect', this.upDown.bind(this, 'menuitem'))
         .text(' ' + $option.text());
 
       var $input = $('<input>')
