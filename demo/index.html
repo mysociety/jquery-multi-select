@@ -27,6 +27,26 @@
         </select>
     </form>
 
+    <form class="demo-example">
+        <label for="ice-cream">Build an ice cream:</label>
+        <select id="ice-cream" name="ice-cream" multiple>
+            <option value="Cone">Just a cone</option>
+            <optgroup label="Flavours">
+                <option value="Vanilla">Vanilla</option>
+                <option value="Chocolate">Chocolate</option>
+                <option value="Pistachio">Pistachio</option>
+            </optgroup>
+            <optgroup label="Toppings">
+                <option value="Sprinkles">Sprinkles</option>
+                <option value="Chocolate chips">Chocolate chips</option>
+            </optgroup>
+            <optgroup label="Sauces">
+                <option value="Strawberry sauce">Strawberry sauce</option>
+                <option value="Chocolate sauce">Chocolate sauce</option>
+            </optgroup>
+        </select>
+    </form>
+
     <div class="demo-example position-menu-within">
         <label for="line-wrap-example">Line wrap example</label>
         <select id="line-wrap-example" multiple>
@@ -52,6 +72,7 @@
     <script type="text/javascript">
     $(function(){
         $('#people').multiSelect();
+        $('#ice-cream').multiSelect();
         $('#line-wrap-example').multiSelect({
             positionMenuWithin: $('.position-menu-within')
         });

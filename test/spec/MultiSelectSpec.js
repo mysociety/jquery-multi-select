@@ -719,6 +719,38 @@ describe("When no `presets` are provided", function() {
   });
 });
 
+describe("When the <select> has optgroups", function() {
+  var $select = $('<select multiple><option value="Cone">Just a cone</option><optgroup label="Flavours"><option>Vanilla</option><option>Chocolate</option><option>Pistachio</option></optgroup><optgroup label="Toppings"><option>Sprinkles</option><option>Chocolate chips</option></optgroup><optgroup label="Sauces"><option>Strawberry sauce</option><option>Chocolate sauce</option></optgroup></select>');
+  $select = $select.multiSelect();
+  var $container = $select.data('multiSelectContainer');
+
+  it("should contain a menu item for each <option> in the original <select>", function() {
+    expect(
+      $container.find('.multi-select-menuitem').length
+    ).toEqual(8);
+  });
+  it("should contain one titled menu item for each <optgroup> in the original <select>", function() {
+    expect(
+      $container.find('.multi-select-menuitem--titled').length
+    ).toEqual(3);
+  });
+  it("should contain one screen-reader titled menu item for each non-first optgroup option in the original <select>", function() {
+    expect(
+      $container.find('.multi-select-menuitem--titledsr').length
+    ).toEqual(4);
+  });
+  it("should contain a menu item for each <option> in the original <select>", function() {
+    expect(
+      $container.find('.multi-select-menuitem').length
+    ).toEqual(8);
+  });
+  it("should have two menuitems in the Sauces optgroup", function() {
+    expect(
+      $container.find('.multi-select-menuitem[data-group-title="Sauces"]').length
+    ).toEqual(2);
+  });
+});
+
 describe("When `modalHTML` is provided", function() {
   var $select, $container;
 

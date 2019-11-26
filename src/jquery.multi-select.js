@@ -15,6 +15,7 @@
       'menuItemHTML': '<label class="multi-select-menuitem">',
       'presetsHTML': '<div class="multi-select-presets">',
       'modalHTML': undefined,
+      'menuItemTitleClass': 'multi-select-menuitem--titled',
       'activeClass': 'multi-select-container--open',
       'noneText': '-- Select --',
       'allText': undefined,
@@ -129,7 +130,7 @@
       var options = [];
       var selected = [];
 
-      this.$element.children('option').each(function() {
+      this.$element.find('option').each(function() {
         var text = /** @type string */ ($(this).text());
         options.push(text);
         if ($(this).is(':selected')) {
@@ -192,9 +193,14 @@
       var _this = this;
       this.$menuItems.empty();
 
-      this.$element.children('option').each(function(option_index, option) {
-        var $item = _this.constructMenuItem($(option), option_index);
-        _this.$menuItems.append($item);
+      this.$element.children('optgroup,option').each(function(index, element) {
+        var $item;
+        if (element.nodeName === 'OPTION') {
+          $item = _this.constructMenuItem($(element), index);
+          _this.$menuItems.append($item);
+        } else {
+          _this.constructMenuItemsGroup($(element), index);
+        }
       });
     },
 
@@ -273,6 +279,20 @@
         } else {
           $input.prop('checked', false);
         }
+      });
+    },
+
+    constructMenuItemsGroup: function($optgroup, optgroup_index) {
+      var _this = this;
+
+      $optgroup.children('option').each(function(option_index, option) {
+        var $item = _this.constructMenuItem($(option), optgroup_index + '_' + option_index);
+        var cls = _this.settings['menuItemTitleClass'];
+        if (option_index !== 0) {
+          cls += 'sr';
+        }
+        $item.addClass(cls).attr('data-group-title', $optgroup.attr('label'));
+        _this.$menuItems.append($item);
       });
     },
 
