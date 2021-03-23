@@ -607,6 +607,10 @@ describe("When a list of `presets` is provided", function() {
         {
           name: 'My friends',
           options: ['alice', 'carol']
+        },
+        {
+          name: 'Everyone',
+          all: true
         }
       ]
     });
@@ -621,7 +625,7 @@ describe("When a list of `presets` is provided", function() {
   it("the presets are presented as radio buttons at the top of the menu", function() {
     expect(
       $container.find('.multi-select-presets input[type="radio"]').length
-    ).toEqual(2);
+    ).toEqual(3);
   });
 
   it("the presets are listed in the order they were originally provided", function() {
@@ -635,6 +639,11 @@ describe("When a list of `presets` is provided", function() {
         $container.find('.multi-select-presets label:nth-child(2)').text()
       )
     ).toEqual('My friends');
+    expect(
+      $.trim(
+        $container.find('.multi-select-presets label:nth-child(3)').text()
+      )
+    ).toEqual('Everyone');
   });
 
   it("the correct starting preset is selected", function(){
@@ -704,6 +713,21 @@ describe("When a list of `presets` is provided", function() {
       expect(
         $select.val()
       ).toEqual(["alice", "carol"]);
+    });
+  });
+
+  describe("When I click the all preset", function(){
+    // This beforeEach will run after the parent beforeEach, where
+    // the <select> is created with no options selected.
+    beforeEach(function(){
+      $container.find('.multi-select-presets label:nth-child(3) input').trigger('click');
+    });
+
+    it("selects all the options", function(){
+      expect($container.find('input[value="alice"]')[0].checked).toBe(true);
+      expect($container.find('input[value="bob"]')[0].checked).toBe(true);
+      expect($container.find('input[value="carol"]')[0].checked).toBe(true);
+      expect($select.val()).toEqual(["alice", "bob", "carol"]);
     });
   });
 });

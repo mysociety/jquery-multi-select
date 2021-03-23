@@ -254,6 +254,14 @@
           })
           .prependTo($item);
 
+        if (preset.all) {
+          preset.options = [];
+          _this.$element.find('option').each(function() {
+            var val = $(this).val();
+            preset.options.push(val);
+          });
+        }
+
         $input.on('change.multiselect', function(){
           _this.$element.val(preset.options);
           _this.$element.trigger('change');
