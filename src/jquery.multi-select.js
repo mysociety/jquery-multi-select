@@ -109,7 +109,7 @@
           e.preventDefault();
           _this.menuShow();
           var group = _this.$presets || _this.$menuItems;
-          group.children(":first").focus();
+          group.children().first().focus();
         } else if (key === escapeKey) {
           _this.menuHide();
         }
@@ -215,7 +215,7 @@
       if (prev.length) {
         prev.focus();
       } else if (this.$presets && type === 'menuitem') {
-        this.$presets.children(':last').focus();
+        this.$presets.children().last().focus();
       } else {
         this.$button.focus();
       }
@@ -225,7 +225,7 @@
       if (next.length || type === 'menuitem') {
         next.focus();
       } else {
-        this.$menuItems.children(':first').focus();
+        this.$menuItems.children().first().focus();
       }
     }
   },
