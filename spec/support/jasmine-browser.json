@@ -1,0 +1,19 @@
+{
+  "srcDir": "src",
+  "srcFiles": [
+    "jquery-2.2.4.min.js",
+    "jquery.multi-select.js"
+  ],
+  "specDir": "spec",
+  "specFiles": [
+    "**/*[sS]pec.js"
+  ],
+  "env": {
+    "stopSpecOnExpectationFailure": false,
+    "stopOnSpecFailure": false,
+    "random": true
+  },
+  "browser": {
+    "name": "headlessChrome"
+  }
+}
