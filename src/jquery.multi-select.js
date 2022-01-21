@@ -115,7 +115,7 @@
         }
       }).on('click.multiselect', function(e) {
         _this.menuToggle();
-      })
+      }).on('blur.multiselect', this.checkBlur.bind(this))
       .appendTo(this.$container);
 
       this.$element.on('change.multiselect', function() {
@@ -265,7 +265,7 @@
         $input.on('change.multiselect', function(){
           _this.$element.val(preset.options);
           _this.$element.trigger('change');
-        });
+        }).on('blur.multiselect', _this.checkBlur.bind(_this));
       });
 
       this.$element.on('change.multiselect', function() {
@@ -339,7 +339,7 @@
         // .prop() on its own doesn't generate a change event.
         // Other plugins might want to do stuff onChange.
         $option.trigger('change', [true]);
-      });
+      }).on('blur.multiselect', this.checkBlur.bind(this));
 
       return $item;
     },
@@ -424,6 +424,12 @@
         this.menuHide();
       } else {
         this.menuShow();
+      }
+    },
+
+    checkBlur: function(e) {
+      if (e.relatedTarget && !$(e.relatedTarget).closest(this.$container).length) {
+        this.menuHide();
       }
     }
 

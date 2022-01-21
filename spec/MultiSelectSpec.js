@@ -344,6 +344,39 @@ describe("When I press arrow keys on menu items", function(){
   });
 });
 
+describe("When I tab around the menu", function(){
+  var $select, $container;
+
+  beforeEach(function(){
+    $select = helper.makeSelect().appendTo('body').multiSelect();
+    $container = $select.data('multiSelectContainer');
+    $container.children('.multi-select-button').trigger('click');
+  });
+
+  afterEach(function(){
+    $select.remove();
+    $container.remove();
+  });
+
+  it("the menu doesn't close from one to next", function() {
+    // Cannot seem to trigger a blur any other way
+    var e = jQuery.Event('blur');
+    e.relatedTarget = $container;
+    $select.data('plugin_multiSelect').checkBlur(e);
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(true);
+  });
+  it("the menu closes when leaving the menu", function() {
+    var e = jQuery.Event('blur');
+    e.relatedTarget = $container.parent();
+    $select.data('plugin_multiSelect').checkBlur(e);
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(false);
+  });
+});
+
 describe("When I click inside an active menu", function(){
   var $select, $container;
 
