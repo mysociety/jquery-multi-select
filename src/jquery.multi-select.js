@@ -68,7 +68,7 @@
       this.setUpBodyClickListener();
       this.setUpLabelsClickListener();
 
-      this.$element.hide();
+      this.hideOriginalElement();
     },
 
     checkSuitableInput: function(text) {
@@ -378,6 +378,11 @@
         e.stopPropagation();
         _this.menuToggle();
       });
+    },
+
+    hideOriginalElement: function() {
+      this.$element.hide();
+      this.$labels.removeAttr('for');
     },
 
     menuShow: function() {
