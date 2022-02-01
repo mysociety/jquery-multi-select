@@ -101,7 +101,40 @@ describe("$(element).multiSelect().data('multiSelectContainer')", function() {
       $container.find('input:checkbox').length
     ).toEqual(3);
   });
+});
 
+describe("Calling .multiSelect() on a <select> referred to by one or more <label>s", function() {
+  var $select, $parent, $label1, $label2;
+
+  beforeEach(function(){
+    $parent = $('<div>').appendTo('body');
+    $select = helper.makeSelect().attr('id', 'select-with-labels').appendTo($parent);
+    $label1 = $('<label for="select-with-labels">Label 1</label>').appendTo($parent);
+    $label2 = $('<label for="select-with-labels">Label 2</label>').appendTo($parent);
+    $select.multiSelect();
+  });
+
+  afterEach(function(){
+    $parent.remove();
+  });
+
+  it("removes the `for` attribute from the labels", function() {
+    expect(
+      $label1.attr('for')
+    ).toBeUndefined();
+    expect(
+      $label2.attr('for')
+    ).toBeUndefined();
+  });
+
+  it("shows the menu when one of the labels is clicked", function(){
+    var $container = $select.data('multiSelectContainer');
+    $label1.trigger('click');
+
+    expect(
+      $container.hasClass('multi-select-container--open')
+    ).toBe(true);
+  });
 });
 
 describe("Calling .multiSelect() on a <select> with pre-selected <options>", function() {

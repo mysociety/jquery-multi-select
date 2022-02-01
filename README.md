@@ -2,6 +2,10 @@
 
 Converts `<select multiple>` elements into dropdown menus with a checkbox for each `<option>`.
 
+The original `<select>` element is hidden, but still present in the document, and will be updated with any selections made via the custom dropdown menu.
+
+Any labels associated with the original `<select>` element will have their `for=` attributes removed, so as not to be left associated with a hidden form element. Clicking the labels will open the dropdown menu as expected.
+
 ## Use this plugin
 
 Assuming HTML markup like this:
