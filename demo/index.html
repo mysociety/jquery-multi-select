@@ -67,6 +67,17 @@
         </select>
     </form>
 
+    <form class="demo-example with-form-wrapper">
+        <label for="categories">Show:</label>
+        <select id="example-wrapper" name="categories" multiple>
+            <option value="a">Abandoned vehicles</option>
+            <option value="b">Bus stops</option>
+            <option value="c">Car parking</option>
+            <option value="d">Dog fouling</option>
+        </select>
+    </form>
+
+
     <script type="text/javascript" src="../src/jquery-2.2.4.min.js"></script>
     <script type="text/javascript" src="../src/jquery.multi-select.js"></script>
     <script type="text/javascript">
@@ -91,6 +102,10 @@
         });
         $('#modal-example').multiSelect({
             'modalHTML': '<div class="multi-select-modal">'
+        });
+
+        $('#example-wrapper').multiSelect({
+            formContainer: '<div class="multi-select-form-container">',
         });
     });
     </script>

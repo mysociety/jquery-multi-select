@@ -8,6 +8,7 @@
 
   var pluginName = "multiSelect",
     defaults = {
+      'formContainer': null,
       'containerHTML': '<div class="multi-select-container">',
       'menuHTML': '<div class="multi-select-menu">',
       'buttonHTML': '<span class="multi-select-button">',
@@ -69,6 +70,11 @@
       this.setUpLabelsClickListener();
 
       this.hideOriginalElement();
+
+      if ((this.settings['formContainer'])) {
+        this.constructFormContainer();
+      }
+
     },
 
     checkSuitableInput: function(text) {
@@ -85,6 +91,19 @@
       this.$container = $(this.settings['containerHTML']);
       this.$element.data('multi-select-container', this.$container);
       this.$container.insertAfter(this.$element);
+    },
+
+    constructFormContainer: function() {
+      this.$container = $(this.settings['formContainer']);
+      this.$element.data('multi-select-form-container', this.$container);
+      var formHTML = this.$element.closest('form');
+      this.$container.prependTo(formHTML);
+
+      var $multiSelectContainer = this.$element.siblings('.multi-select-container');
+      var $labelHTML = this.$element.siblings('label');
+      $multiSelectContainer.prependTo(this.$container);
+      $labelHTML.prependTo(this.$container);
+      this.$element.prependTo(this.$container);
     },
 
     constructButton: function() {

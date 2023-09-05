@@ -58,7 +58,8 @@ body {
     margin-bottom: 2em;
 }
 
-.demo-example > label {
+.demo-example > label,
+.demo-example div > label:not(.multi-select-menuitem){
     display: block;
     margin-bottom: 0.5em;
     font-weight: bold;
