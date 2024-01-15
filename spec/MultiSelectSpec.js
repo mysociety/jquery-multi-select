@@ -819,15 +819,15 @@ describe("When the <select> has optgroups", function() {
       $container.find('.multi-select-menuitem').length
     ).toEqual(8);
   });
-  it("should contain one titled menu item for each <optgroup> in the original <select>", function() {
+  it("should contain one fieldset for each <optgroup> in the original <select>", function() {
     expect(
-      $container.find('.multi-select-menuitem--titled').length
+      $container.find('.multi-select-fieldset').length
     ).toEqual(3);
   });
-  it("should contain one screen-reader titled menu item for each non-first optgroup option in the original <select>", function() {
+  it("should contain one legend for each optgroup in the original <select>", function() {
     expect(
-      $container.find('.multi-select-menuitem--titledsr').length
-    ).toEqual(4);
+      $container.find('.multi-select-legend').length
+    ).toEqual(3);
   });
   it("should contain a menu item for each <option> in the original <select>", function() {
     expect(
@@ -836,7 +836,7 @@ describe("When the <select> has optgroups", function() {
   });
   it("should have two menuitems in the Sauces optgroup", function() {
     expect(
-      $container.find('.multi-select-menuitem[data-group-title="Sauces"]').length
+      $container.find('.multi-select-fieldset[data-label="Sauces"] .multi-select-menuitem').length
     ).toEqual(2);
   });
 });

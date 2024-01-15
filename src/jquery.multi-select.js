@@ -12,10 +12,11 @@
       'menuHTML': '<div class="multi-select-menu">',
       'buttonHTML': '<span class="multi-select-button">',
       'menuItemsHTML': '<div class="multi-select-menuitems">',
+      'menuFieldsetHTML': '<fieldset class="multi-select-fieldset">',
+      'menuFieldsetLegendHTML': '<legend class="multi-select-legend">',
       'menuItemHTML': '<label class="multi-select-menuitem">',
       'presetsHTML': '<div class="multi-select-presets">',
       'modalHTML': undefined,
-      'menuItemTitleClass': 'multi-select-menuitem--titled',
       'activeClass': 'multi-select-container--open',
       'noneText': '-- Select --',
       'allText': undefined,
@@ -205,30 +206,49 @@
     },
 
     upDown: function(type, e) {
-    var key = e.which;
-    var upArrow = 38;
-    var downArrow = 40;
+      // target is a label, could be a preset, a menu item in a fieldset
+      // or a menu item not in a fieldset
 
-    if (key === upArrow) {
-      e.preventDefault();
-      var prev = $(e.currentTarget).prev();
-      if (prev.length) {
-        prev.focus();
-      } else if (this.$presets && type === 'menuitem') {
-        this.$presets.children().last().focus();
-      } else {
-        this.$button.focus();
+      var key = e.which;
+      var upArrow = 38;
+      var downArrow = 40;
+
+      if (key === upArrow) {
+        e.preventDefault();
+        var target = e.currentTarget,
+            prev = target.previousElementSibling;
+        if (prev && prev.nodeName === 'LEGEND') { prev = null; }
+        if (!prev) {
+          // If empty, prev could be start of a fieldset, start of presets, start of menu items
+          prev = target.parentNode.previousElementSibling;
+        }
+        if (prev) {
+          if (prev.nodeName === 'LABEL') {
+            prev.focus();
+          } else {
+            prev.lastChild.focus();
+          }
+        } else {
+          this.$button.focus();
+        }
+      } else if (key === downArrow) {
+        e.preventDefault();
+        // next could be another label, or a fieldset, or nothing.
+        var target = e.currentTarget,
+            next = target.nextElementSibling;
+        if (!next) {
+          // If empty, next could be end of a fieldset, end of presets, end of menu items
+          next = target.parentNode.nextElementSibling;
+        }
+        if (next) {
+          if (next.nodeName === 'LABEL') {
+            next.focus();
+          } else {
+            next.querySelector('label').focus();
+          }
+        }
       }
-    } else if (key === downArrow) {
-      e.preventDefault();
-      var next = $(e.currentTarget).next();
-      if (next.length || type === 'menuitem') {
-        next.focus();
-      } else {
-        this.$menuItems.children().first().focus();
-      }
-    }
-  },
+    },
 
     constructPresets: function() {
       var _this = this;
@@ -292,16 +312,18 @@
 
     constructMenuItemsGroup: function($optgroup, optgroup_index) {
       var _this = this;
+      var $fieldset = $(_this.settings['menuFieldsetHTML']);
+      var groupTitle = $optgroup.attr('label');
+      $fieldset.attr('data-label', groupTitle);
+      var $legend = $(_this.settings['menuFieldsetLegendHTML']).text(groupTitle);
+      $fieldset.append($legend);
 
       $optgroup.children('option').each(function(option_index, option) {
         var $item = _this.constructMenuItem($(option), optgroup_index + '_' + option_index);
-        var cls = _this.settings['menuItemTitleClass'];
-        if (option_index !== 0) {
-          cls += 'sr';
-        }
-        $item.addClass(cls).attr('data-group-title', $optgroup.attr('label'));
-        _this.$menuItems.append($item);
+        $fieldset.append($item);
       });
+
+      _this.$menuItems.append($fieldset);
     },
 
     constructMenuItem: function($option, option_index) {
