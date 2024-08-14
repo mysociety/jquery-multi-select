@@ -94,6 +94,7 @@
       this.$button.attr({
         'role': 'button',
         'aria-haspopup': 'true',
+        'aria-expanded': 'false',
         'tabindex': 0,
         'aria-label': this.$labels.eq(0).text()
       })
@@ -410,6 +411,7 @@
     menuShow: function() {
       $('html').trigger('click.multiselect'); // Close any other open menus
       this.$container.addClass(this.settings['activeClass']);
+      this.$button.attr('aria-expanded', 'true');
 
       if ( this.settings['positionMenuWithin'] && this.settings['positionMenuWithin'] instanceof $ ) {
         var menuLeftEdge = this.$menu.offset().left + this.$menu.outerWidth();
@@ -444,6 +446,7 @@
       this.$container.removeClass(this.settings['activeClass']);
       this.$container.removeClass(this.settings['positionedMenuClass']);
       this.$menu.css('width', 'auto');
+      this.$button.attr('aria-expanded', 'false');
     },
 
     menuToggle: function() {
