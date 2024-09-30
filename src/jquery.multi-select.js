@@ -156,7 +156,7 @@
 
       this.$menu = $(this.settings['menuHTML']);
       this.$menu.attr({
-        'role': 'menu'
+        'role': 'group'
       }).on('keyup.multiselect', function(e){
         var key = e.which;
         var escapeKey = 27;
@@ -261,7 +261,6 @@
         var $item = $(_this.settings['menuItemHTML'])
           .attr({
             'for': unique_id,
-            'role': 'menuitem'
           })
           .text(' ' + preset.name)
           .on('keydown.multiselect', _this.upDown.bind(_this, 'preset'))
@@ -332,7 +331,6 @@
       var $item = $(this.settings['menuItemHTML'])
         .attr({
           'for': unique_id,
-          'role': 'menuitem'
         })
         .on('keydown.multiselect', this.upDown.bind(this, 'menuitem'))
         .text(' ' + $option.text());
