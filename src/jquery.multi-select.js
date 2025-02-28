@@ -24,7 +24,8 @@
       'positionedMenuClass': 'multi-select-container--positioned',
       'positionMenuWithin': undefined,
       'viewportBottomGutter': 20,
-      'menuMinHeight': 200
+      'menuMinHeight': 200,
+      'inputClass': undefined
     };
 
   /**
@@ -270,7 +271,8 @@
           .attr({
             'type': 'radio',
             'name': _this.$element.attr('name') + '_presets',
-            'id': unique_id
+            'id': unique_id,
+            'class': this.settings['inputClass']
           })
           .prependTo($item);
 
@@ -339,7 +341,8 @@
         .attr({
           'type': 'checkbox',
           'id': unique_id,
-          'value': $option.val()
+          'value': $option.val(),
+          'class': this.settings['inputClass']
         })
         .prependTo($item);
 
